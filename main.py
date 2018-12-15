@@ -32,6 +32,10 @@ iris = datasets.load_iris()
 X = iris.data[:, :2]
 y = iris.target
 
+iris = datasets.load_iris()
+X = iris.data[:, :2]
+y = iris.target
+
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=1)
 
 X_test, X_val, y_test, y_val = train_test_split(X_test, y_test, test_size=0.4, random_state=1)
@@ -112,4 +116,39 @@ for C in columns:
         print('Score C = ' + str(C) + '  gamma = ' + str(gamma) + '  score = ' + str(int(score*100)) +'%')
 
 title = ('RBF kernel (C = ' + str(max_C) + '  gamma = ' + str(max_gamma) + ')')
+print_graph(title, max_clf)
+
+X_train = np.concatenate((X_train, X_val), axis=0)
+y_train = np.concatenate((y_train, y_val), axis=0)
+
+X_folds = np.array_split(X_train, 5)
+y_folds = np.array_split(y_train, 5)
+
+max_score=0
+
+print('Grid search of the best parameters for an RBF kernel using 5 folds:\n\n')
+
+for k in range(5):
+
+    X_train = list(X_folds)
+    X_test = X_train.pop(k)
+    X_train = np.concatenate(X_train)
+    y_train = list(y_folds)
+    y_test = y_train.pop(k)
+    y_train = np.concatenate(y_train)
+    for C in columns:
+        row = []
+        for gamma in rows:
+            model = svm.SVC(kernel='rbf', C=C, gamma=gamma)
+            clf = model.fit(X_train, y_train)
+            score = clf.score(X_test, y_test)
+            if score >= max_score:
+                max_score = score
+                max_clf = clf
+                max_C = C
+                max_k = k
+                max_gamma = gamma
+            print('(' + str(k+1) + '-fold)' + 'Score C = ' + str(C) + '  gamma = ' + str(gamma) + '  score = ' + str(int(score * 100)) + '%')
+
+title = ('RBF kernel (C = ' + str(max_C) + '  gamma = ' + str(max_gamma) + ' fold number = ' + str(max_k+1) + ')')
 print_graph(title, max_clf)
