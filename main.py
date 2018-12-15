@@ -71,9 +71,7 @@ plt.show()
 plt.close()
 
 #RBF kernel
-scores = []
 max_score = 0
-Cs = []
 for n in range(-3, 4):
     C = pow(10, n)
     Cs.append(C)
@@ -98,7 +96,6 @@ columns = []
 for i in range(-3, 6):
     C = pow(10, i)
     columns.append(C)
-cell_text = []
 
 print('Grid search of the best parameters for an RBF kernel:\n\n')
 max_score = 0
@@ -124,7 +121,7 @@ y_train = np.concatenate((y_train, y_val), axis=0)
 X_folds = np.array_split(X_train, 5)
 y_folds = np.array_split(y_train, 5)
 
-max_score=0
+max_score = 0
 
 print('Grid search of the best parameters for an RBF kernel using 5 folds:\n\n')
 
