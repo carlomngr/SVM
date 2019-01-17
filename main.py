@@ -36,9 +36,9 @@ iris = datasets.load_iris()
 X = iris.data[:, :2]
 y = iris.target
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=1)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5)
 
-X_test, X_val, y_test, y_val = train_test_split(X_test, y_test, test_size=0.4, random_state=1)
+X_test, X_val, y_test, y_val = train_test_split(X_test, y_test, test_size=0.4)
 
 
 #Linear SVM
@@ -56,9 +56,12 @@ for n in range(-3, 4):
         max_clf = clf
         max_C = C
     scores.append(score)
+    print('Score C = ' + str(C) + '  score = ' + str(int(score * 100)) + '%')
     title = ('Decision surface on the best of linear SVC ' + '(C = ' + str(C) + ')')
-    print_graph(title,clf)
+    print_graph(title, clf)
 
+score = max_clf.score(X_test, y_test)
+print('Score on test set: C = ' + str(max_C) + '  score = ' + str(int(score * 100)) + '%')
 
 title = ('Decision surface on the best of linear SVC ' + '(C = ' + str(max_C) + ')')
 print_graph(title, max_clf)
@@ -83,7 +86,12 @@ for n in range(-3, 4):
         max_clf = clf
         max_C = C
     scores.append(score)
+    print('Score C = ' + str(C) + '  score = ' + str(int(score * 100)) + '%')
+    title = ('Decision surface on the best of RBF-kernel' + '(C = ' + str(C) + ')')
+    print_graph(title, clf)
 
+score = max_clf.score(X_test, y_test)
+print('Score on test set: C = ' + str(max_C) + '  score = ' + str(int(score * 100)) + '%')
 title = ('RBF kernel ' + '(C = ' + str(max_C) + ')')
 print_graph(title, max_clf)
 
@@ -104,7 +112,7 @@ for C in columns:
     for gamma in rows:
         model = svm.SVC(kernel='rbf', C=C, gamma=gamma)
         clf = model.fit(X_train, y_train)
-        score = clf.score(X_test, y_test)
+        score = clf.score(X_val, y_val)
         if score >= max_score:
             max_score = score
             max_clf = clf
@@ -112,6 +120,8 @@ for C in columns:
             max_gamma = gamma
         print('Score C = ' + str(C) + '  gamma = ' + str(gamma) + '  score = ' + str(int(score*100)) +'%')
 
+score = max_clf.score(X_test, y_test)
+print('Score on test set: C = ' + str(max_C) + '  gamma = ' + str(max_gamma) + '  score = ' + str(int(score * 100)) + '%')
 title = ('RBF kernel (C = ' + str(max_C) + '  gamma = ' + str(max_gamma) + ')')
 print_graph(title, max_clf)
 
@@ -146,6 +156,7 @@ for k in range(5):
                 max_k = k
                 max_gamma = gamma
             print('(' + str(k+1) + '-fold)' + 'Score C = ' + str(C) + '  gamma = ' + str(gamma) + '  score = ' + str(int(score * 100)) + '%')
+
 
 title = ('RBF kernel (C = ' + str(max_C) + '  gamma = ' + str(max_gamma) + ' fold number = ' + str(max_k+1) + ')')
 print_graph(title, max_clf)
