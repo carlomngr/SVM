@@ -57,7 +57,7 @@ for n in range(-3, 4):
         max_C = C
     scores.append(score)
     print('Score C = ' + str(C) + '  score = ' + str(int(score * 100)) + '%')
-    title = ('Decision surface on the best of linear SVC ' + '(C = ' + str(C) + ')')
+    title = ('Decision surface of linear SVC ' + '(C = ' + str(C) + ')')
     print_graph(title, clf)
 
 score = max_clf.score(X_test, y_test)
@@ -87,12 +87,12 @@ for n in range(-3, 4):
         max_C = C
     scores.append(score)
     print('Score C = ' + str(C) + '  score = ' + str(int(score * 100)) + '%')
-    title = ('Decision surface on the best of RBF-kernel' + '(C = ' + str(C) + ')')
+    title = ('Decision surface of RBF-kernel' + '(C = ' + str(C) + ')')
     print_graph(title, clf)
 
 score = max_clf.score(X_test, y_test)
-print('Score on test set: C = ' + str(max_C) + '  score = ' + str(int(score * 100)) + '%')
-title = ('RBF kernel ' + '(C = ' + str(max_C) + ')')
+print('Score on test set with the best RBF-kernel: C = ' + str(max_C) + '  score = ' + str(int(score * 100)) + '%')
+title = ('Decision surface on the best of RBF-kernel ' + '(C = ' + str(max_C) + ')')
 print_graph(title, max_clf)
 
 
